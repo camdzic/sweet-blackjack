@@ -140,7 +140,7 @@ export class Blackjack {
 
   // Double down and deal a new card to the player, then stand
   public doubleDown() {
-    if (this.state === "waiting" && this.player.length === 2) {
+    if (this.canDoubleDown()) {
       this.table.bet *= 2;
 
       this.player.push(...this.cards.dealCard(1));
@@ -166,6 +166,11 @@ export class Blackjack {
     } else if (this.state === "draw") {
       this.table.payout = this.table.bet;
     }
+  }
+
+  // Check if the player can double down
+  public canDoubleDown() {
+    return this.state === "waiting" && this.player.length === 2;
   }
 
   // Add an event listener for the end of the game
