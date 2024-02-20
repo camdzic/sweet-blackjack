@@ -1,5 +1,5 @@
 {
-  "name": "blackjack-engine",
+  "name": "sweet-blackjack",
   "version": "1.0.0",
   "description": "A simple blackjack engine written in TypeScript.",
   "license": "MIT",
@@ -14,10 +14,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/camdzic/blackjack-engine.git"
+    "url": "https://github.com/camdzic/sweet-blackjack.git"
   },
   "bugs": {
-    "url": "https://github.com/camdzic/blackjack-engine/issues"
+    "url": "https://github.com/camdzic/sweet-blackjack/issues"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

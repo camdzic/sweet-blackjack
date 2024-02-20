@@ -1,17 +1,17 @@
-# blackjack-engine
+# sweet-blackjack
 
 A simple implementation of the classic card game Blackjack (also known as 21), written in TypeScript. This implementation includes classes for a Blackjack game and a Deck of cards.
 
 ## Installation
 
 ```bash
-npm install blackjack-engine
+npm install sweet-blackjack
 ```
 
 ## Usage
 
 ```typescript
-import { BlackjackGame } from "blackjack-engine";
+import { BlackjackGame } from "sweet-blackjack";
 
 // Create a new instance of Blackjack with 4 decks
 const game = new Blackjack(4);
