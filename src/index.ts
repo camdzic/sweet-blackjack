@@ -34,7 +34,7 @@ export class Blackjack {
   private state: GameState = "waiting";
   private player: Card[] = [];
   private dealer: Card[] = [];
-  private table: Table = {
+  public table: Table = {
     player: {
       total: 0,
       cards: [],
