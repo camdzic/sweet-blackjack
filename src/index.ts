@@ -1,20 +1,22 @@
-interface Card {
+export interface Card {
   name: string;
   suit: string;
   value: number;
 }
 
-interface Table {
+export interface Table {
   player: FormattedCards;
   dealer: FormattedCards;
+  bet: number;
+  payout: number;
 }
 
-interface FormattedCards {
+export interface FormattedCards {
   total: number;
   cards: Card[];
 }
 
-type GameState =
+export type GameState =
   | "waiting"
   | "player_blackjack"
   | "player_win"
@@ -26,6 +28,8 @@ type EndEventHandler = (data: {
   state: GameState;
   player: FormattedCards;
   dealer: FormattedCards;
+  bet: number;
+  payout: number;
 }) => void;
 
 // Exported blackjack class with the necessary methods and properties
@@ -43,6 +47,8 @@ export class Blackjack {
       total: 0,
       cards: [],
     },
+    bet: 0,
+    payout: 0,
   };
   private cards!: Deck;
 
@@ -52,8 +58,21 @@ export class Blackjack {
     this.decks = validateDeck(decks);
   }
 
+  // Place a bet on the table
+  public placeBet(bet: number) {
+    if (bet <= 0) {
+      throw new Error("You must place a bet greater than 0");
+    }
+
+    this.table.bet = bet;
+  }
+
   // Start the game by shuffling the deck, dealing 2 cards to the player and dealer, and returning the table
   public start() {
+    if (this.table.bet <= 0) {
+      throw new Error("You must place a bet before starting the game");
+    }
+
     this.cards = new Deck(this.decks);
     this.cards.shuffleDeck(2);
 
@@ -73,7 +92,14 @@ export class Blackjack {
       this.player.push(newCard);
       this.updateTable();
 
-      if (sumCards(this.player) > 21) {
+      const playerSum = sumCards(this.player);
+
+      if (this.player.length === 2 && playerSum === 21) {
+        this.state = "player_blackjack";
+        this.emitEndEvent();
+      }
+
+      if (playerSum > 21) {
         this.state = "dealer_win";
         this.emitEndEvent();
       }
@@ -112,6 +138,36 @@ export class Blackjack {
     this.emitEndEvent();
   }
 
+  // Double down and deal a new card to the player, then stand
+  public doubleDown() {
+    if (this.state === "waiting" && this.player.length === 2) {
+      this.table.bet *= 2;
+
+      this.player.push(...this.cards.dealCard(1));
+      this.updateTable();
+
+      this.stand();
+    } else {
+      throw new Error("You can only double down on the first turn");
+    }
+  }
+
+  // Calculate the payout based on the state of the game
+  public calculatePayout() {
+    if (this.state === "player_blackjack") {
+      this.table.payout = this.table.bet * 1.5;
+    } else if (this.state === "player_win") {
+      this.table.payout = this.table.bet;
+    } else if (
+      this.state === "dealer_win" ||
+      this.state === "dealer_blackjack"
+    ) {
+      this.table.payout = 0;
+    } else if (this.state === "draw") {
+      this.table.payout = this.table.bet;
+    }
+  }
+
   // Add an event listener for the end of the game
   public onEnd(handler: EndEventHandler) {
     this.endHandlers.push(handler);
@@ -119,11 +175,15 @@ export class Blackjack {
 
   // Emit the end event to all the listeners
   private emitEndEvent() {
+    this.calculatePayout();
+
     for (let handler of this.endHandlers) {
       handler({
         state: this.state,
         player: formatCards(this.player),
         dealer: formatCards(this.dealer),
+        bet: this.table.bet,
+        payout: this.table.payout,
       });
     }
   }
@@ -216,28 +276,15 @@ export class Deck {
 
     return cards;
   }
-
-  // Replace the deck with the dealt cards
-  public replaceDeck() {
-    if (this.dealtCards.length > 0) {
-      this.deck.unshift(this.dealtCards.shift()!);
-    }
-  }
-
-  // Clear the deck and the dealt cards
-  public clearDeck() {
-    this.deck = [];
-    this.dealtCards = [];
-  }
 }
 
 // Sum the value of the cards
-function sumCards(cards: Card[]) {
+export function sumCards(cards: Card[]) {
   return cards.map((c) => +c.value).reduce((acc, cur) => acc + cur, 0);
 }
 
 // Format the cards to return the total and the cards
-function formatCards(cards: Card[]): FormattedCards {
+export function formatCards(cards: Card[]): FormattedCards {
   return { total: sumCards(cards), cards };
 }
 
