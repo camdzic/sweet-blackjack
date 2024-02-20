@@ -67,12 +67,19 @@ export class Blackjack {
 
   // Deal a new card to the player and update the table
   public hit() {
-    const newCard = this.cards.dealCard(1)[0];
+    if (this.state === "waiting") {
+      const newCard = this.cards.dealCard(1)[0];
 
-    this.player.push(newCard);
-    this.updateTable();
+      this.player.push(newCard);
+      this.updateTable();
 
-    return newCard;
+      if (sumCards(this.player) > 21) {
+        this.state = "dealer_win";
+        this.emitEndEvent();
+      }
+
+      return this.table;
+    }
   }
 
   // Stand and let the dealer play, then emit the end event
