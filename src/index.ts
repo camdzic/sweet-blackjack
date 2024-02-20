@@ -60,8 +60,7 @@ export class Blackjack {
     this.player = this.cards.dealCard(2);
     this.dealer = this.cards.dealCard(2);
 
-    this.table.player = formatCards(this.player);
-    this.table.dealer = formatCards(this.dealer);
+    this.updateTable();
 
     return this.table;
   }
@@ -124,8 +123,8 @@ export class Blackjack {
 
   // Update the table with the new cards
   private updateTable() {
-    this.table.player.cards = formatCards(this.player).cards;
-    this.table.dealer.cards = formatCards(this.dealer).cards;
+    this.table.player = formatCards(this.player);
+    this.table.dealer = formatCards(this.dealer);
   }
 }
 

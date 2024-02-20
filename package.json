@@ -1,6 +1,6 @@
 {
   "name": "sweet-blackjack",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple blackjack engine written in TypeScript.",
   "license": "MIT",
   "scripts": {
