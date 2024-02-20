@@ -11,26 +11,29 @@ npm install sweet-blackjack
 ## Usage
 
 ```typescript
-import { BlackjackGame } from "sweet-blackjack";
+import { Blackjack } from "sweet-blackjack";
 
 // Create a new instance of Blackjack with 4 decks
 const game = new Blackjack(4);
 
-// Start the game and get the initial table state
-game.start();
-
-// Perform game actions, like hitting or standing
-// Example:
-// game.hit();
-// game.stand();
-
 // Listen for the end of the game
 game.onEnd((data) => {
-  // Handle game end
   console.log("Game state:", data.state);
   console.log("Player's cards:", data.player.cards);
   console.log("Dealer's cards:", data.dealer.cards);
+  console.log("Payout:", data.payout);
 });
+
+// Place a bet before starting the game
+game.placeBet(100);
+
+// Start the game and get the initial table state
+game.start();
+
+// Perform game actions, like hitting, standing or doubling down 
+game.doubleDown(); // Only available on the first turn
+game.hit(); // Draw a card
+game.stand(); // End the turn
 ```
 
 ## License
