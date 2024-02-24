@@ -13,10 +13,8 @@ npm install sweet-blackjack
 ```typescript
 import { Blackjack } from "sweet-blackjack";
 
-// Create a new instance of Blackjack with 4 decks
 const game = new Blackjack(4);
 
-// Listen for the end of the game
 game.onEnd((data) => {
   console.log("Game state:", data.state);
   console.log("Player's cards:", data.player.cards);
@@ -24,17 +22,57 @@ game.onEnd((data) => {
   console.log("Payout:", data.payout);
 });
 
-// Place a bet before starting the game
 game.placeBet(100);
 
-// Start the game and get the initial table state
 game.start();
 
-// Perform game actions, like hitting, standing or doubling down 
-game.doubleDown(); // Only available on the first turn
-game.hit(); // Draw a card
-game.stand(); // End the turn
+game.doubleDown();
+game.hit();
+game.stand();
 ```
+
+## API
+
+### `Blackjack`
+
+#### `constructor(decks: number)`
+- `decks` - The number of decks to use in the game
+
+#### `placeBet(amount: number)`
+- `amount` - The amount of money to bet
+
+#### `start()`
+Starts the game and deals the initial cards
+
+#### `hit()`
+Draws a card from the deck
+
+#### `stand()`
+Ends the player's turn
+
+#### `doubleDown()`
+Doubles the player's bet and draws one more card
+
+#### `onEnd(callback: (data: GameEndData) => void)`
+- `callback` - A function to be called when the game ends
+
+### `Deck`
+
+#### `constructor(decks: number)`
+- `decks` - The number of decks to use in the game
+
+#### `shuffle()`
+Shuffles the deck
+
+#### `draw()`
+Draws a card from the deck
+
+#### `cardsLeft()`
+Returns the number of cards left in the deck
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate. 
 
 ## License
 

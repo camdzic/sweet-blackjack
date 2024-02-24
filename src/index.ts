@@ -151,7 +151,7 @@ export class Blackjack {
       throw new Error("You can only double down on the first turn");
     }
   }
-
+  
   // Calculate the payout based on the state of the game
   public calculatePayout() {
     if (this.state === "player_blackjack") {
