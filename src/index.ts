@@ -9,6 +9,7 @@ export interface Table {
   dealer: FormattedCards;
   bet: number;
   payout: number;
+  doubleDowned?: boolean;
 }
 
 export interface FormattedCards {
@@ -49,6 +50,7 @@ export class Blackjack {
     },
     bet: 0,
     payout: 0,
+    doubleDowned: false,
   };
   private cards!: Deck;
 
@@ -148,7 +150,7 @@ export class Blackjack {
   // Double down and deal a new card to the player, then stand
   public doubleDown() {
     if (this.canDoubleDown()) {
-      this.table.bet *= 2;
+      this.table.doubleDowned = true;
 
       this.player.push(...this.cards.dealCard(1));
       this.updateTable();
@@ -172,6 +174,10 @@ export class Blackjack {
       this.table.payout = 0;
     } else if (this.state === "draw") {
       this.table.payout = this.table.bet;
+    }
+
+    if (this.table.doubleDowned && this.state !== "draw") {
+      this.table.payout *= 2;
     }
   }
 
