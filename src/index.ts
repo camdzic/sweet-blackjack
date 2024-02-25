@@ -35,7 +35,7 @@ type EndEventHandler = (data: {
 // Exported blackjack class with the necessary methods and properties
 export class Blackjack {
   private decks: number;
-  private state: GameState = "waiting";
+  public state: GameState = "waiting";
   private player: Card[] = [];
   private dealer: Card[] = [];
   public table: Table = {
@@ -151,7 +151,7 @@ export class Blackjack {
       throw new Error("You can only double down on the first turn");
     }
   }
-  
+
   // Calculate the payout based on the state of the game
   public calculatePayout() {
     if (this.state === "player_blackjack") {
