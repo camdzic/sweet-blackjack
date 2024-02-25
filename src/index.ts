@@ -179,7 +179,7 @@ export class Blackjack {
   }
 
   // Emit the end event to all the listeners
-  private emitEndEvent() {
+  public emitEndEvent() {
     this.calculatePayout();
 
     for (let handler of this.endHandlers) {
