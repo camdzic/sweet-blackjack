@@ -77,7 +77,14 @@ export class Blackjack {
     this.cards.shuffleDeck(2);
 
     this.player = this.cards.dealCard(2);
-    this.dealer = this.cards.dealCard(2);
+
+    let dealerFirstCard: Card;
+
+    do {
+      dealerFirstCard = this.cards.dealCard(1)[0];
+    } while (dealerFirstCard.value > 11);
+
+    this.dealer = [dealerFirstCard, ...this.cards.dealCard(1)];
 
     this.updateTable();
 
