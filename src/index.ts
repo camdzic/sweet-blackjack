@@ -164,22 +164,23 @@ export class Blackjack {
   // Calculate the payout based on the state of the game
   public calculatePayout() {
     if (this.state === "player_blackjack") {
-      this.table.payout = Math.round(this.table.bet * 1.5);
+      this.table.payout = this.table.bet * 1.5;
     } else if (this.state === "player_win") {
-      this.table.payout = Math.round(this.table.bet);
+      this.table.payout = this.table.bet;
     } else if (
       this.state === "dealer_win" ||
       this.state === "dealer_blackjack"
     ) {
       this.table.payout = 0;
     } else if (this.state === "draw") {
-      this.table.payout = Math.round(this.table.bet);
+      this.table.payout = this.table.bet;
     }
 
     if (this.table.doubleDowned && this.state !== "draw") {
       this.table.payout *= 2;
-      this.table.payout = Math.round(this.table.payout);
     }
+
+    this.table.payout = Math.round(this.table.payout);
   }
 
   // Check if the player can double down
