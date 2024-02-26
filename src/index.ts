@@ -103,12 +103,10 @@ export class Blackjack {
 
       const playerSum = sumCards(this.player);
 
-      if (this.player.length === 2 && playerSum === 21) {
+      if (playerSum === 21) {
         this.state = "player_blackjack";
         this.emitEndEvent();
-      }
-
-      if (playerSum > 21) {
+      } else if (playerSum > 21) {
         this.state = "dealer_win";
         this.emitEndEvent();
       }
