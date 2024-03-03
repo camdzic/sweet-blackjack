@@ -261,6 +261,12 @@ export class Deck {
         this.deck.push(card(suits[s], values[v]));
       }
     }
+
+    for (let i = 0; i < this.deck.length; i++) {
+      if (this.deck[i].value === 11 && this.calculateHandValue() > 21) {
+        this.deck[i].value = 1;
+      }
+    }
   }
 
   // Shuffle the deck a given amount of times
@@ -293,6 +299,26 @@ export class Deck {
     }
 
     return cards;
+  }
+
+  // Calculate the value of the hand
+  private calculateHandValue() {
+    let value = 0;
+    let numAces = 0;
+
+    for (const card of this.deck) {
+      value += card.value;
+      if (card.value === 11) {
+        numAces++;
+      }
+    }
+
+    while (value > 21 && numAces > 0) {
+      value -= 10;
+      numAces--;
+    }
+
+    return value;
   }
 }
 
