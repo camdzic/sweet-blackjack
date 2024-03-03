@@ -261,12 +261,6 @@ export class Deck {
         this.deck.push(card(suits[s], values[v]));
       }
     }
-
-    for (let i = 0; i < this.deck.length; i++) {
-      if (this.deck[i].value === 11 && this.calculateHandValue() > 21) {
-        this.deck[i].value = 1;
-      }
-    }
   }
 
   // Shuffle the deck a given amount of times
@@ -300,31 +294,23 @@ export class Deck {
 
     return cards;
   }
-
-  // Calculate the value of the hand
-  private calculateHandValue() {
-    let value = 0;
-    let numAces = 0;
-
-    for (const card of this.deck) {
-      value += card.value;
-      if (card.value === 11) {
-        numAces++;
-      }
-    }
-
-    while (value > 21 && numAces > 0) {
-      value -= 10;
-      numAces--;
-    }
-
-    return value;
-  }
 }
 
 // Sum the value of the cards
 export function sumCards(cards: Card[]) {
-  return cards.map((c) => +c.value).reduce((acc, cur) => acc + cur, 0);
+  let value = 0;
+  let numAces = 0;
+
+  for (const card of cards) {
+    value += card.value;
+    numAces += card.value === 11 ? 1 : 0;
+  }
+
+  while (value > 21 && numAces > 0) {
+    value -= 10;
+  }
+
+  return value;
 }
 
 // Format the cards to return the total and the cards
