@@ -102,8 +102,12 @@ export class Blackjack {
       this.updateTable();
 
       const playerSum = sumCards(this.player);
+      const dealerSum = sumCards(this.dealer);
 
-      if (playerSum === 21) {
+      if (playerSum === dealerSum) {
+        this.state = "draw";
+        this.emitEndEvent();
+      } else if (playerSum === 21) {
         this.state = "player_blackjack";
         this.emitEndEvent();
       } else if (playerSum > 21) {
